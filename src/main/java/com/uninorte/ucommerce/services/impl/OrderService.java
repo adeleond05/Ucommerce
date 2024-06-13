@@ -43,9 +43,6 @@ public class OrderService implements IOrderService {
 
   @Override
   public OrderDTO saveOrder(OrderDTO orderDTO) {
-    if (!productRepository.existsById(orderDTO.getProductId())) {
-      throw new CustomException("404", PRODUCT_NOT_FOUND_MESSAGE);
-    }
     if (!userRepository.existsById(orderDTO.getUserId())) {
       throw new CustomException("404", "No se encuentra el usuario");
     }

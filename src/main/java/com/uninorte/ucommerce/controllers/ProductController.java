@@ -5,10 +5,13 @@ import com.uninorte.ucommerce.exception.CustomException;
 import com.uninorte.ucommerce.services.IProductService;
 import java.util.List;
 import java.util.Optional;
+
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/product")
 @RequiredArgsConstructor
+@Validated
 public class ProductController {
 
   private final IProductService productService;
@@ -41,7 +45,7 @@ public class ProductController {
   }
 
   @PostMapping
-  public ResponseEntity<ProductDTO> saveProduct(@RequestBody ProductDTO product) {
+  public ResponseEntity<ProductDTO> saveProduct(@Valid @RequestBody ProductDTO product) {
     ProductDTO newProduct = productService.saveProduct(product);
     return new ResponseEntity<>(newProduct, HttpStatus.CREATED);
   }
