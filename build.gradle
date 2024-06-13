@@ -28,6 +28,8 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:2.4.4'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     implementation group: 'org.hibernate', name: 'hibernate-core', version: '5.6.0.Final'
+    implementation platform('com.azure:azure-sdk-bom:1.2.24')
+    implementation 'com.azure:azure-storage-blob'
 }
 
 tasks.named('test') {

@@ -1,7 +1,5 @@
 package com.uninorte.ucommerce.services.impl;
 
-import static com.uninorte.ucommerce.services.impl.ProductService.PRODUCT_NOT_FOUND_MESSAGE;
-
 import com.uninorte.ucommerce.dto.OrderDTO;
 import com.uninorte.ucommerce.exception.CustomException;
 import com.uninorte.ucommerce.models.Order;
