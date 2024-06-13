@@ -16,6 +16,7 @@ public class User {
 
   @Id
   private String id;
+  private String idFirebase;
   private String name;
   private String email;
 }
