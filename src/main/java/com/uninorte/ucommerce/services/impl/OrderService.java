@@ -1,10 +1,10 @@
 package com.uninorte.ucommerce.services.impl;
 
-import static com.uninorte.ucommerce.services.impl.ProductService.PRODUCT_NOT_FOUND_MESSAGE;
-
 import com.uninorte.ucommerce.dto.OrderDTO;
+import com.uninorte.ucommerce.dto.ProductOrderDTO;
 import com.uninorte.ucommerce.exception.CustomException;
 import com.uninorte.ucommerce.models.Order;
+import com.uninorte.ucommerce.models.Product;
 import com.uninorte.ucommerce.repository.OrderRepository;
 import com.uninorte.ucommerce.repository.ProductRepository;
 import com.uninorte.ucommerce.repository.UserRepository;
@@ -21,6 +21,9 @@ import org.springframework.stereotype.Service;
 public class OrderService implements IOrderService {
 
   static final String ORDER_NOT_FOUND_MESSAGE = "No se encuentra la orden";
+  static final String USER_NOT_FOUND_MESSAGE = "No se encuentra el usuario";
+  static final String PRODUCT_NOT_FOUND_MESSAGE ="No se encuentra el producto con id ";
+  static final String PENDING_STATUS = "Pending";
   private final OrderRepository orderRepository;
   private final UserRepository userRepository;
   private final ProductRepository productRepository;
@@ -44,11 +47,29 @@ public class OrderService implements IOrderService {
   @Override
   public OrderDTO saveOrder(OrderDTO orderDTO) {
     if (!userRepository.existsById(orderDTO.getUserId())) {
-      throw new CustomException("404", "No se encuentra el usuario");
+      throw new CustomException("404",USER_NOT_FOUND_MESSAGE);
     }
+    validateProduct(orderDTO.getProducts());
+    orderDTO.setTotalPrice(totalPrice(orderDTO.getProducts()));
+    orderDTO.setStatus(PENDING_STATUS);
     Order order = modelMapper.map(orderDTO, Order.class);
     Order savedOrder = orderRepository.save(order);
     return modelMapper.map(savedOrder, OrderDTO.class);
+  }
+
+  private void validateProduct(List<ProductOrderDTO> products) {
+      products.forEach(product -> {
+        Product existingProduct = productRepository.findById(product.getProductId())
+                .orElseThrow(() -> new CustomException("404", PRODUCT_NOT_FOUND_MESSAGE + product.getProductId()));
+        modelMapper.map(existingProduct, product);
+      });
+  }
+
+  private Integer totalPrice(List<ProductOrderDTO> products) {
+    return products.stream()
+            .filter(product -> product.getPrice() != null && product.getQuantity() != null)
+            .map(product -> product.getPrice() * product.getQuantity())
+            .reduce(0, Integer::sum);
   }
 
   @Override
