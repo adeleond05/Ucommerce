@@ -36,4 +36,6 @@ public class ProductDTO {
   @Min(value = 0, message = "Stock must be at least 0")
   @Max(value = 10000, message = "Stock must be less than 10000")
   private Integer stock;
+
+  private String image;
 }
