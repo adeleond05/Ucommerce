@@ -1,8 +1,11 @@
 package com.uninorte.ucommerce.controllers;
 
+import com.uninorte.ucommerce.dto.ProductDTO;
 import com.uninorte.ucommerce.dto.UserDTO;
 import com.uninorte.ucommerce.exception.CustomException;
 import com.uninorte.ucommerce.services.IUserService;
+
+import java.util.List;
 import java.util.Optional;
 
 import jakarta.validation.Valid;
@@ -37,6 +40,11 @@ public class UserController {
     }
   }
 
+  @GetMapping
+  public ResponseEntity<List<UserDTO>> getAllProducts() {
+    List<UserDTO> products = userService.getAllUser();
+    return new ResponseEntity<>(products, HttpStatus.OK);
+  }
   @PostMapping
   public ResponseEntity<UserDTO> saveUser(@Valid @RequestBody UserDTO user) {
     UserDTO newUser = userService.saveUser(user);
