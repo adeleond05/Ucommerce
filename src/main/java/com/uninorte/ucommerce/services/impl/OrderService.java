@@ -61,6 +61,7 @@ public class OrderService implements IOrderService {
       products.forEach(product -> {
         Product existingProduct = productRepository.findById(product.getProductId())
                 .orElseThrow(() -> new CustomException("404", PRODUCT_NOT_FOUND_MESSAGE + product.getProductId()));
+        existingProduct.setQuantity(product.getQuantity());
         modelMapper.map(existingProduct, product);
       });
   }

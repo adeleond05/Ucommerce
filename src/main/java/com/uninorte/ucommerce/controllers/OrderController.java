@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
-@Validated
 @CrossOrigin(origins = "*")
 public class OrderController {
 
